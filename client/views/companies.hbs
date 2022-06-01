@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+  <!--
+    WARNING! Make sure that you match all Quasar related
+    tags to the same version! (Below it's "@2.7.1")
+  -->
+
+  <head>
+    <title>Naija Companies</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@^4.0.0/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/quasar@2.7.1/dist/quasar.prod.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <!-- example of injection point where you write your app template -->
+    <div id="q-app" style="min-height: 100vh;">
+
+
+
+      <div class="q-pa-md q-gutter-sm">
+      
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4"
+                src="https://blog.logrocket.com/wp-content/uploads/2020/01/logrocket-blog-logo.png" alt="Logo"
+                height="72">
+            <h2>NAIJA COMPANIES</h2>
+            <p class="lead">Example of CRUD made with Node.js, Express, Handlebars and gRPC</p>
+        </div>
+
+       
+     
+        <q-table
+          title="Naija Companies"
+          :rows="rows"
+          :columns="columns"
+          row-key="name"
+        >
+
+{{!--          
+        <template v-slot:header="props">
+          <q-tr :props="props">
+            <q-th auto-width ></q-th>
+            <q-th
+              v-for="col in props.cols"
+              :key="col.name"
+              :props="props"
+            >
+              {{ col.label }}
+            </q-th>
+          </q-tr>
+        </template> --}}
+
+        <template v-slot:body="props">
+        <q-tr :props="props">
+        {{props.row}}
+          <q-td auto-width>
+            <q-btn size="sm" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'remove' : 'add'" ></q-btn>
+          </q-td>
+          {{props}}
+          <q-td
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+          >
+            {{ col.value }}
+          </q-td>
+        </q-tr>
+        <q-tr v-show="props.expand" :props="props">
+          <q-td colspan="100%">
+            <div class="text-left">This is expand slot for row above: {{ props.row.name }}.</div>
+          </q-td>
+        </q-tr>
+      </template>
+        
+        
+        </q-table>
+
+
+  <div class="q-pa-md q-gutter-sm">
+        <q-btn color="secondary" label="ADD NEW" @click="fixed=true" align="right"></q-btn>
+        <q-dialog v-model="fixed">
+          <q-card>
+          <q-form
+             action="/companies" method="post"
+              class="q-gutter-md"
+            >
+            <q-card-section>
+              <div class="text-h6">Add New Company</div>
+            </q-card-section>
+
+            <q-separator ></q-separator>
+
+            <q-card-section style="max-height: 50vh" class="scroll">
+             
+               <q-input
+                outlined
+                v-model="name"
+                label="Company Name"
+                name="name"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please enter company name']"
+              ></q-input>
+
+              <q-select 
+                outlined 
+                v-model="sector" 
+                :options="sectors" 
+                label="Company's Sector"
+                name="sector"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please choose a sector']" >
+              </q-select>
+
+
+              <q-input
+                outlined
+                v-model="category"
+                label="Company's Category"
+                name="category"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please enter a category']"
+              ></q-input>
+
+              <q-toggle
+                v-model="is_startup"
+                name="is_startup"
+                label="Is the company a Startup?"
+              ></q-toggle>
+
+              <q-input
+                outlined
+                v-model="ceo"
+                label="Name of CEO"
+                name="ceo"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please enter name of CEO']"
+              ></q-input>
+
+              <q-input outlined v-model="revenue" type="number" name="revenue" prefix="₦" label="Estimated Revenue">
+                <template v-slot:append>
+                  <q-avatar>
+                    <img src="https://www.svgrepo.com/show/225751/nigeria.svg">
+                  </q-avatar>
+                </template>
+              </q-input>
+
+            
+            </q-card-section>
+
+            <q-separator ></q-separator>
+
+            <q-card-actions align="right">
+              <q-btn flat label="Clear" color="primary" type="reset" v-close-popup ></q-btn>
+              <q-btn flat label="Accept" color="primary"  type="submit" ></q-btn>
+            </q-card-actions>
+            </q-form>
+          </q-card>
+        </q-dialog>
+  </div>
+       
+     
+     
+    
+
+        
+       
+      </div>
+   
+    </div>
+
+    <!-- Add the following at the end of your body tag -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quasar@2.7.1/dist/quasar.umd.prod.js"></script>
+
+
+    
+    
+    <script>
+      /*
+        Example kicking off the UI. Obviously, adapt this to your specific needs.
+        Assumes you have a <div id="q-app"></div> in your <body> above
+       */
+
+       const {ref, createApp} = Vue
+
+
+      const app = createApp({
+        setup () {
+
+          const columns = [
+            {
+              name: 'name',
+              required: true,
+              label: 'Name',
+              align: 'left',
+              field: row => row.name,
+            },
+            { name: 'sector', align: 'left', label: 'Sector', field: 'sector', sortable: true },
+            { name: 'category',  align:'left', label: 'Category', field: 'category', sortable: true },
+            { name: 'is_startup', label: 'Is Start UP?', field: 'is_startup', sortable: true },
+            { name: 'ceo', label: 'CEO', field: 'ceo', sortable: true },
+            { name: 'revenue', label: 'revenue', field: 'revenue', sortable: true },
+            { name: 'action', label: '', field: 'action'},
+          ]
+
+          {{!-- const rows = {{{json results}}} --}}
+    const rows = [{
+        name: "Dell",
+        sector: "IT",
+        category: "",
+        is_startup: false,
+        ceo: "Michael Dell",
+        revenue: "92.2 billion",
+    },
+    {
+        name: "Netflix",
+        sector: "IT",
+        category: "",
+        is_startup: false,
+        ceo: "Reed Hastings",
+        revenue: "20.2 billion",
+    },
+    {
+        name: "Microsoft",
+        sector: "IT",
+        category: "",
+        is_startup: false,
+        ceo: "Satya Nadella",
+        revenue: "320 million",
+    }
+];
+
+
+          return {
+            alert: ref(false),
+            confirm: ref(false),
+            prompt: ref(false),
+            fixed: ref(false),
+            
+            columns:ref(columns),
+            rows: ref(rows),
+            
+
+            sectors: [
+            'IT', "FinTech", 'HealthTech'
+            ],
+
+           name: ref(null),
+           category: ref(null),
+           sector: ref(null),
+           is_startup: ref(true),
+           revenue: ref(0),
+
+
+           onSubmit(){
+             console.log("Name:", name.value, category.value, sector.value, is_startup, )
+           },
+
+           onReset(){
+             name.value = null
+           },
+          }
+          
+        }
+      })
+
+      app.use(Quasar)
+      app.mount('#q-app')
+    </script>
+  </body>
+</html>

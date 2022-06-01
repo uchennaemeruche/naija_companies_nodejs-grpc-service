@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+
+//  id: "ca8c79oni9549g0k43ug" - contains the unique identifier of the news item.
+//  name: "Verve", -  Name of the company
+//  sector: "FinTech", -  Sector of the company
+//  category: "", - category of the company
+//  is_startup: false, -  specifies if the company is a startup
+//  ceo: "Michele Elegbe", - name of the company's ceo
+//  revenue: "12.2 billion", -  the company's estimated revenue
+
+
+message Company {
+    string id = 1;
+    string name = 2;
+    string sector = 3;
+    string category = 4;
+    bool is_startup = 5;
+    string ceo = 6;
+    string revenue = 7;
+}
+
+ 
+
+message Empty {}
+
+message companyId {
+    string id =1;
+}
+
+message Companies {
+    repeated Company companies = 1;
+}
+
+service CompanyService{
+    rpc GetAllCompanies (Empty) returns (Companies) {}
+    rpc AddCompany(Company) returns (Company){}
+    rpc DeleteCompany(companyId) returns(Empty){}
+    rpc UpdateCompany (Company) returns (Company);
+    rpc GetCompany (companyId) returns (Company);
+}
+
+

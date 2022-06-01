@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-grpc-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.6.7",
+    "@grpc/proto-loader": "^0.6.12",
+    "express": "^4.18.1",
+    "hbs": "^4.2.0",
+    "uuid": "^8.3.2"
+  }
+}
