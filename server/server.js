@@ -13,7 +13,7 @@ const opts = {
 };
 
 const packageDefinition = grpcProtoLoader.loadSync(PROTO_PATH, opts)
-const newsProto = grpc.loadPackageDefinition(packageDefinition)
+const companyProto = grpc.loadPackageDefinition(packageDefinition)
 
 const server = new grpc.Server()
 
@@ -48,7 +48,7 @@ let companies = [{
 
 
 
-server.addService(newsProto.CompanyService.service, {
+server.addService(companyProto.CompanyService.service, {
     getAllCompanies: (_, callback) => {
         callback(null, { companies })
     },
