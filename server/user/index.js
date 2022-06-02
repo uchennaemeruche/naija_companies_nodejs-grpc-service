@@ -30,8 +30,8 @@ async function main() {
     server.addService(userProto.UserService.service, {
         signup: api.signup,
         login: api.signup,
-        verify: api.verify,
-        getUser: api.getUser,
+        // verify: api.verify,
+        // getUser: api.getUser,
     })
 
     server.bindAsync(`${process.env.HOST}:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), () => {
