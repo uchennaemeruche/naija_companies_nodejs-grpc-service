@@ -1,22 +1,23 @@
 require("dotenv").config()
-const grpcProtoLoader = require("@grpc/proto-loader");
+// const grpcProtoLoader = require("@grpc/proto-loader");
 const grpc = require("@grpc/grpc-js")
+const services = require("./proto/user_grpc_pb")
 
 
 const API = require("./api");
 const connectDB = require("../utils/db");
 
-const PROTO_PATH = "../../protos/user.proto";
-const opts = {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true,
-};
+// const PROTO_PATH = "../../protos/user.proto";
+// const opts = {
+//     keepCase: true,
+//     longs: String,
+//     enums: String,
+//     defaults: true,
+//     oneofs: true,
+// };
 
-const packageDefinition = grpcProtoLoader.loadSync(PROTO_PATH, opts);
-const userProto = grpc.loadPackageDefinition(packageDefinition);
+// const packageDefinition = grpcProtoLoader.loadSync(PROTO_PATH, opts);
+// const userProto = grpc.loadPackageDefinition(packageDefinition);
 
 
 let api = null;
@@ -27,7 +28,7 @@ async function main() {
     api = new API(db, grpc)
     let server = new grpc.Server()
 
-    server.addService(userProto.UserService.service, {
+    server.addService(services.UserServiceService, {
         signup: api.signup,
         login: api.signup,
         // verify: api.verify,
@@ -40,4 +41,6 @@ async function main() {
     })
 }
 
-main()
+main().then((res) => {
+    console.log("Running main", res)
+}).catch(err =>console.log("Error while running MAIN", err))
